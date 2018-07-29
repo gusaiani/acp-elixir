@@ -41,4 +41,31 @@ defmodule Gcd do
 
   defp get_largest(a, b) when a > b, do: {a, b}
   defp get_largest(a, b), do: {b, a}
+
+  @doc """
+  The function below calculates the average number of times
+  `E1`, basically the remainder calculation, is performed for `n`.
+
+  This is question 6 of section 1.1.
+
+  So T5 would be the average number of times for n = 5, which is
+  calculated performing gcd on m=[1, 2, 3, 4, 5], *without* reordering.
+
+  ## Examples
+
+      iex> Gcd.t(5)
+      2.6
+
+  """
+  def t(n) do
+    Enum.reduce(1..n, 0, fn i, acc -> acc + unordered_start(i, n) end) / n
+  end
+
+  def unordered_start(m, n, times \\ 0)
+  def unordered_start(m, n, times) do
+    case remainder = rem(m, n) do
+      0 -> times + 1
+      _ -> unordered_start(n, remainder, times + 1)
+    end
+  end
 end
